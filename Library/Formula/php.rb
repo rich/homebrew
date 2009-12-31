@@ -6,9 +6,6 @@ class Php < Formula
   homepage 'http://www.php.net/'
   md5 '63e97ad450f0f7259e785100b634c797'
 
-  depends_on 'mysql' => :recommended
-  depends_on 'postgresql' => :recommended
-
   def patches
     DATA
   end
@@ -19,6 +16,13 @@ class Php < Formula
       ["--postgresql", "Enable PostgreSQL."],
       ["--pear", "Enable PEAR."]
     ]
+  end
+
+  def deps
+    dependencies = super
+    dependencies << 'mysql' if ARGV.include? '--mysql'
+    dependencies << 'postgresql' if ARGV.include? '--postgresql'
+    dependencies
   end
 
   def install
