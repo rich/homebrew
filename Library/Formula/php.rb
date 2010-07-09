@@ -1,10 +1,10 @@
 require 'formula'
 
 class Php < Formula
-  version '5.3.1'
-  url 'http://us.php.net/get/php-5.3.1.tar.bz2/from/this/mirror'
+  version '5.3.2'
+  url 'http://us.php.net/get/php-5.3.2.tar.bz2/from/this/mirror'
   homepage 'http://www.php.net/'
-  md5 '63e97ad450f0f7259e785100b634c797'
+  md5 '46f500816125202c48a458d0133254a4'
 
   def patches
     DATA
@@ -14,7 +14,8 @@ class Php < Formula
     [
       ["--mysql", "Enable MySQL."],
       ["--postgresql", "Enable PostgreSQL."],
-      ["--pear", "Enable PEAR."]
+      ["--pear", "Enable PEAR."],
+      ["--fpm", "Enable PHP-FPM"]
     ]
   end
 
@@ -31,6 +32,12 @@ class Php < Formula
     args += %w|--with-mysql --with-mysqli --with-pdo-mysql| if ARGV.include? "--mysql"
     args += %w|--with-pgsql --with-pdo-pgsql| if ARGV.include? "--postgresql"
     args << "--with-pear" if ARGV.include? "--pear"
+
+    if ARGV.include? "--fpm"
+      system "svn co http://svn.php.net/repository/php/php-src/branches/PHP_5_3/sapi/fpm sapi/fpm"
+      system "./buildconf --force"
+      args << "--enable-fpm"
+    end
 
     system "./configure", *args
     system "make"
