@@ -15,7 +15,8 @@ class Php < Formula
       ["--mysql", "Enable MySQL."],
       ["--postgresql", "Enable PostgreSQL."],
       ["--pear", "Enable PEAR."],
-      ["--fpm", "Enable PHP-FPM"]
+      ["--fpm", "Enable PHP-FPM"],
+      ["--tidy", "Enable Tidy"]
     ]
   end
 
@@ -23,6 +24,7 @@ class Php < Formula
     dependencies = super
     dependencies << 'mysql' if ARGV.include? '--mysql'
     dependencies << 'postgresql' if ARGV.include? '--postgresql'
+    dependencies << 'tidy' if ARGV.include? '--tidy'
     dependencies
   end
 
@@ -31,6 +33,7 @@ class Php < Formula
 
     args += %w|--with-mysql --with-mysqli --with-pdo-mysql| if ARGV.include? "--mysql"
     args += %w|--with-pgsql --with-pdo-pgsql| if ARGV.include? "--postgresql"
+    args += %w|--with-tidy| if ARGV.include? "--tidy"
     args << "--with-pear" if ARGV.include? "--pear"
 
     if ARGV.include? "--fpm"
