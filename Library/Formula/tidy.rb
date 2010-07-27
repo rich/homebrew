@@ -4,21 +4,10 @@ class Tidy < Formula
   version '1.2.2'
   url 'http://tidy.cvs.sourceforge.net/viewvc/tidy/tidy/?view=tar'
   homepage 'http://tidy.sf.net/'
-  md5 '2bebdcf35fab64ac60224dece946f5aa'
+  md5 '41693fef44ba3f8c3db1f14ac3fd6178'
 
   def install
-    syst
-    args = ["--prefix=#{prefix}", "--enable-cli", "--enable-cgi", "--enable-shared", "--disable-debug", "--disable-dependency-tracking", "--with-config-file-path=#{etc}"]
-
-    args += %w|--with-mysql --with-mysqli --with-pdo-mysql| if ARGV.include? "--mysql"
-    args += %w|--with-pgsql --with-pdo-pgsql| if ARGV.include? "--postgresql"
-    args << "--with-pear" if ARGV.include? "--pear"
-
-    if ARGV.include? "--fpm"
-      system "svn co http://svn.php.net/repository/php/php-src/branches/PHP_5_3/sapi/fpm sapi/fpm"
-      system "./buildconf --force"
-      args << "--enable-fpm"
-    end
+    args = ["--prefix=#{prefix}"]
 
     system "/bin/sh build/gnuauto/setup.sh"
     system "./configure", *args
@@ -26,3 +15,4 @@ class Tidy < Formula
     system "make install"
   end
 end
+
